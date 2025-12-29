@@ -15,7 +15,10 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await dbConnect();
+    const connection = await dbConnect();
+    if (!connection) {
+      return NextResponse.json({ workspaces: [] }, { status: 200 });
+    }
 
     // Find workspaces where user is owner or member
     const workspaces = await Workspace.find({

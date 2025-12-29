@@ -15,7 +15,12 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    await dbConnect();
+    const connection = await dbConnect();
+    
+    // Return empty array if no database connection (build time or missing env)
+    if (!connection) {
+      return NextResponse.json({ activities: [] }, { status: 200 });
+    }
 
     const { searchParams } = new URL(request.url);
     const workspaceId = searchParams.get('workspaceId');
