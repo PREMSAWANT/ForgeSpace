@@ -18,6 +18,11 @@ export async function GET(request) {
 
     await dbConnect();
 
+    const connection = await dbConnect();
+    if (!connection) {
+      return NextResponse.json({ projects: [] }, { status: 200 });
+    }
+
     const { searchParams } = new URL(request.url);
     const workspaceId = searchParams.get('workspaceId');
 
