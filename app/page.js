@@ -1,6 +1,46 @@
 export default function Home() {
   return (
     <main className="min-h-screen pt-16 relative overflow-hidden">
+      {/* Architectural Background Animations */}
+      <div className="architectural-grid"></div>
+      <div className="isometric-grid"></div>
+      <div className="scan-line"></div>
+      
+      {/* Blueprint Lines */}
+      <div className="blueprint-lines">
+        <div className="blueprint-line" style={{ top: '10%' }}></div>
+        <div className="blueprint-line" style={{ top: '30%' }}></div>
+        <div className="blueprint-line" style={{ top: '60%' }}></div>
+        <div className="blueprint-line" style={{ top: '85%' }}></div>
+      </div>
+
+      {/* Floating Particles */}
+      <div className="particles-container">
+        {[...Array(20)].map((_, i) => (
+          <div 
+            key={i}
+            className="particle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${100 + Math.random() * 20}%`,
+              animationDelay: `${Math.random() * -20}s`,
+              animationDuration: `${15 + Math.random() * 10}s`
+            }}
+          ></div>
+        ))}
+      </div>
+
+      {/* Floating Geometric Shapes */}
+      <div style={{ position: 'fixed', top: '20%', right: '10%', pointerEvents: 'none', zIndex: 1 }}>
+        <div className="floating-shape square" style={{ opacity: 0.15 }}></div>
+      </div>
+      <div style={{ position: 'fixed', bottom: '15%', left: '15%', pointerEvents: 'none', zIndex: 1 }}>
+        <div className="floating-shape circle" style={{ opacity: 0.12 }}></div>
+      </div>
+      <div style={{ position: 'fixed', top: '50%', left: '5%', pointerEvents: 'none', zIndex: 1 }}>
+        <div className="floating-shape triangle" style={{ opacity: 0.1 }}></div>
+      </div>
+
       {/* Geometric Background Decorations */}
       <div className="shape-circle" style={{ top: '100px', right: '-100px' }}></div>
       <div className="shape-square" style={{ bottom: '200px', left: '-75px' }}></div>
