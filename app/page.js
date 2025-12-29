@@ -1,126 +1,187 @@
 export default function Home() {
   return (
-    <main className="min-h-screen pt-16 relative">
-      {/* Hero Section */}
-      <section className="container-custom section min-h-screen flex flex-col justify-center items-center text-center relative z-10 -mt-20">
-        <div className="space-y-8 max-w-5xl animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-sm text-secondary mb-4 backdrop-blur-sm">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="mono text-xs">v1.0.0 Stable</span>
-          </div>
+    <main className="min-h-screen pt-16 relative overflow-hidden">
+      {/* Geometric Background Decorations */}
+      <div className="shape-circle" style={{ top: '100px', right: '-100px' }}></div>
+      <div className="shape-square" style={{ bottom: '200px', left: '-75px' }}></div>
+      <div className="shape-triangle" style={{ top: '400px', right: '10%' }}></div>
 
-          {/* Hero Title */}
-          <h1 className="logo-hero text-6xl md:text-8xl tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60 pb-2">
-            ForgeSpace
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-secondary font-light max-w-3xl mx-auto leading-relaxed">
-            The <span className="code text-white">serverless</span> workspace for modern technical teams.
-            <br className="hidden md:block" />
-            Collaboration without the clutter.
-          </p>
-          
-          <div className="flex flex-col md:flex-row gap-5 justify-center mt-12 items-center">
-            <a href="/api/auth/signin" className="btn-primary text-base px-10 py-4 h-14">
-              Get Started <span className="ml-2">→</span>
-            </a>
-            <a href="#features" className="text-secondary hover:text-white transition-colors text-sm font-medium border-b border-white/20 hover:border-white pb-0.5">
-              Read Documentation
-            </a>
-          </div>
-
-          {/* Code Snippet Preview */}
-          <div className="mt-16 mx-auto max-w-3xl glass-card rounded-xl border border-white/5 bg-black/50 p-4 transform rotate-1 hover:rotate-0 transition-transform duration-500">
-            <div className="flex gap-2 mb-4 px-2">
-              <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-              <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-              <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
+      {/* Hero Section - Asymmetric */}
+      <section className="container-custom section min-h-screen flex items-center relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+          {/* Left: Content Block */}
+          <div className="space-y-8 animate-slide-in">
+            <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-accent-blue bg-accent-blue/10">
+              <div className="status-dot status-active"></div>
+              <span className="mono text-sm font-semibold tracking-wide">v1.0.0 Production Ready</span>
             </div>
-            <pre className="text-left font-mono text-sm text-secondary overflow-x-auto p-2">
-              <code>
-                <span className="text-purple-400">const</span> <span className="text-blue-400">workspace</span> = <span className="text-yellow-400">await</span> forge.<span className="text-blue-400">create</span>({'{'}{'\n'}
-                {'  '}name: <span className="text-green-400">"Engineering"</span>,{'\n'}
-                {'  '}privacy: <span className="text-green-400">"encrypted"</span>,{'\n'}
-                {'  '}mode: <span className="text-green-400">"collaborative"</span>{'\n'}
-                {'}'});
-              </code>
-            </pre>
+
+            <h1 className="text-7xl lg:text-8xl xl:text-9xl font-bold leading-none tracking-tighter">
+              Build.
+              <br />
+              <span className="logo" style={{ background: 'linear-gradient(135deg, #3B82F6, #8B5CF6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                Collaborate.
+              </span>
+              <br />
+              Ship.
+            </h1>
+
+            <p className="text-xl lg:text-2xl text-secondary max-w-xl leading-relaxed">
+              The modern project collaboration platform built for{' '}
+              <span className="code">serverless</span> teams. Secure workspaces, real-time collaboration, zero config.
+            </p>
+
+            <div className="flex flex-wrap gap-4 pt-4">
+              <button className="btn-block-primary">
+                Start Building Free →
+              </button>
+              <button className="btn-block-secondary">
+                View Demo
+              </button>
+            </div>
+
+            <div className="flex items-center gap-8 pt-8 text-sm opacity-70">
+              <div>
+                <div className="text-3xl font-bold mono">50K+</div>
+                <div className="text-secondary">Active Teams</div>
+              </div>
+              <div className="h-12 w-px bg-white/20"></div>
+              <div>
+                <div className="text-3xl font-bold mono">1M+</div>
+                <div className="text-secondary">Projects Launched</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right: Floating Blocks Visualization */}
+          <div className="relative h-[600px] hidden lg:block">
+            {/* Stacked Blocks with Animation */}
+            <div className="block-accent absolute top-0 right-0 w-64 p-6 animate-float" style={{ animationDelay: '0s' }}>
+              <div className="text-xs mono text-accent-blue mb-2">WORKSPACE α</div>
+              <div className="text-sm font-semibold">Design System 2.0</div>
+              <div className="flex gap-2 mt-4">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-blue to-accent-purple"></div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-purple to-accent-blue"></div>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-blue to-accent-emerald"></div>
+              </div>
+            </div>
+
+            <div className="block-hover absolute top-1/3 right-20 w-56 p-5 animate-float" style={{ animationDelay: '1s', border: '3px solid #8B5CF6' }}>
+              <div className="text-xs mono text-accent-purple mb-2">PROJECT β</div>
+              <div className="text-sm font-semibold">Mobile App Launch</div>
+              <div className="mt-4 flex gap-2">
+                <span className="tech-badge text-xs">React</span>
+                <span className="tech-badge text-xs">Node</span>
+              </div>
+            </div>
+
+            <div className="block absolute bottom-20 right-10 w-48 p-4 animate-float" style={{ animationDelay: '2s', borderColor: '#10B981' }}>
+              <div className="text-xs mono text-accent-emerald mb-2">ACTIVE</div>
+              <div className="text-sm font-semibold">12 Contributors</div>
+              <div className="status-dot status-active mt-2"></div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section - Bento Grid */}
-      <section id="features" className="container-custom section py-32 relative z-10">
-        <div className="text-center mb-20">
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 tracking-tight">
-            Designed for <span className="font-serif italic font-light opacity-80">flow state</span>
-          </h2>
-          <p className="text-secondary max-w-xl mx-auto text-lg">
-            Every pixel serves a purpose. No distractions, just pure productivity.
-          </p>
+      {/* Features Section - Block Grid */}
+      <section className="container-custom section py-24 relative z-10">
+        <div className="text-center mb-16">
+          <h2 className="text-5xl lg:text-6xl font-bold mb-4">Everything You Need</h2>
+          <p className="text-xl text-secondary">Powerful features in a beautiful, block-based interface</p>
         </div>
-        
-        <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
-          {/* Card 1 */}
-          <div className="card md:col-span-2 group">
-            <div className="text-4xl mb-6 opacity-80 group-hover:scale-110 transition-transform duration-300">◆</div>
-            <h3 className="text-2xl font-semibold mb-3">Workspace Management</h3>
-            <p className="text-secondary leading-relaxed max-w-md">
-              Organize projects into isolated environments. Invite team members with granular <span className="code">RBAC</span> permissions and maintain complete separation of concerns.
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Feature Block 1 - Large */}
+          <div className="block-hover lg:col-span-2 border-accent-top">
+            <div className="block-number">01</div>
+            <div className="text-3xl mb-4">🚀</div>
+            <h3 className="text-2xl font-bold mb-3">Zero-Config Workspaces</h3>
+            <p className="text-secondary text-lg leading-relaxed">
+              Create isolated environments in seconds. No setup, no hassle. Just pure productivity with{' '}
+              <span className="code text-accent-blue">role-based permissions</span> out of the box.
             </p>
+            <div className="mt-6 flex gap-3">
+              <span className="tech-badge">Instant Setup</span>
+              <span className="tech-badge">RBAC</span>
+              <span className="tech-badge">Serverless</span>
+            </div>
           </div>
-          
-          {/* Card 2 */}
-          <div className="card group">
-            <div className="text-4xl mb-6 opacity-80 group-hover:scale-110 transition-transform duration-300">◉</div>
-            <h3 className="text-2xl font-semibold mb-3">Real-time Sync</h3>
+
+          {/* Feature Block 2 */}
+          <div className="block-hover" style={{ borderColor: '#8B5CF6' }}>
+            <div className="block-number" style={{ color: '#1A1A1A' }}>02</div>
+            <div className="text-3xl mb-4">⚡</div>
+            <h3 className="text-xl font-bold mb-3">Real-Time Collaboration</h3>
             <p className="text-secondary leading-relaxed">
-              Instant state propagation across all connected clients using serverless adapters.
-            </p>
-          </div>
-          
-          {/* Card 3 */}
-          <div className="card group">
-            <div className="text-4xl mb-6 opacity-80 group-hover:scale-110 transition-transform duration-300">◈</div>
-            <h3 className="text-2xl font-semibold mb-3">Audit Logs</h3>
-            <p className="text-secondary leading-relaxed">
-              Immutable activity streams for security compliance and team accountability.
+              Work together seamlessly with live updates and activity tracking.
             </p>
           </div>
 
-          {/* Card 4 - Wide */}
-          <div className="card md:col-span-2 group">
-            <div className="flex items-center justify-between mb-6">
-              <div className="text-4xl opacity-80 group-hover:scale-110 transition-transform duration-300">⚡</div>
-              <div className="tech-badge text-xs">Powered by Next.js 14</div>
-            </div>
-            <h3 className="text-2xl font-semibold mb-3">Zero-Config Deployment</h3>
-            <p className="text-secondary leading-relaxed max-w-lg">
-              Push to deploy. ForgeSpace handles the infrastructure, scaling, and database optimizations so you can focus on shipping code.
+          {/* Feature Block 3 */}
+          <div className="block-hover" style={{ borderColor: '#10B981' }}>
+            <div className="block-number" style={{ color: '#1A1A1A' }}>03</div>
+            <div className="text-3xl mb-4">🔒</div>
+            <h3 className="text-xl font-bold mb-3">Enterprise Security</h3>
+            <p className="text-secondary leading-relaxed">
+              Bank-level encryption with OAuth 2.0 authentication and granular access control.
             </p>
+          </div>
+
+          {/* Feature Block 4 - Wide */}
+          <div className="block-hover lg:col-span-2" style={{ borderColor: '#F59E0B' }}>
+            <div className="block-number" style={{ color: '#1A1A1A' }}>04</div>
+            <div className="text-3xl mb-4">📂</div>
+            <h3 className="text-2xl font-bold mb-3">Smart File Management</h3>
+            <p className="text-secondary text-lg leading-relaxed">
+              Upload, organize, and share files effortlessly with Cloudinary integration. Never lose track of your assets.
+            </p>
+          </div>
+
+          {/* Feature Block 5 */}
+          <div className="block-hover" style={{ borderColor: '#3B82F6' }}>
+            <div className="block-number" style={{ color: '#1A1A1A' }}>05</div>
+            <div className="text-3xl mb-4">📊</div>
+            <h3 className="text-xl font-bold mb-3">Activity Insights</h3>
+            <p className="text-secondary leading-relaxed">
+              Track every action with detailed activity logs and analytics.
+            </p>
+          </div>
+
+          {/* Feature Block 6 - Accent */}
+          <div className="block-accent lg:col-span-3 text-center py-12">
+            <div className="text-4xl mb-4">✨</div>
+            <h3 className="text-3xl font-bold mb-4">Developer-First Experience</h3>
+            <p className="text-secondary text-lg max-w-2xl mx-auto mb-6">
+              Built with Next.js, MongoDB, and modern web standards. Clean APIs, comprehensive docs, and a beautiful interface that developers actually love.
+            </p>
+            <button className="btn-block-secondary">Explore Documentation →</button>
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="container-custom section py-32 text-center relative z-10 border-t border-white/5">
-        <div className="absolute inset-0 bg-spotlight opacity-50 pointer-events-none" />
-        <div className="max-w-3xl mx-auto space-y-8 relative">
-          <h2 className="text-5xl md:text-6xl font-bold tracking-tight">
-            Ready to ship?
-          </h2>
-          <p className="text-xl text-secondary font-light">
-            Join thousands of developers building on ForgeSpace.
-          </p>
-          <div className="pt-8">
-            <a href="/api/auth/signin" className="btn-primary text-lg px-12 py-4 h-16">
-              Initialize Workspace
-            </a>
+      {/* CTA Section - Bold Block */}
+      <section className="container-custom section py-24 relative z-10">
+        <div className="block-accent p-16 text-center relative overflow-hidden animate-glow">
+          <div className="shape-circle animate-float" style={{ top: '-50px', right: '-50px', opacity: 0.05 }}></div>
+          <div className="relative z-10">
+            <h2 className="text-5xl lg:text-6xl font-bold mb-6">
+              Ready to Transform Your Workflow?
+            </h2>
+            <p className="text-xl text-secondary mb-8 max-w-2xl mx-auto">
+              Join thousands of teams building better products with ForgeSpace.
+            </p>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <button className="btn-block-primary text-lg px-12 py-5">
+                Get Started Free →
+              </button>
+              <button className="btn-block-secondary text-lg px-12 py-5">
+                Schedule Demo
+              </button>
+            </div>
           </div>
         </div>
       </section>
     </main>
-  )
+  );
 }
