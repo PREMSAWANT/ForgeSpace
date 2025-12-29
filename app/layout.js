@@ -10,7 +10,13 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }) {
-  const session = await getServerSession(authOptions);
+  // Make session optional - don't crash if auth fails
+  let session = null;
+  try {
+    session = await getServerSession(authOptions);
+  } catch (error) {
+    console.warn('Session initialization failed:', error.message);
+  }
 
   return (
     <html lang="en">
