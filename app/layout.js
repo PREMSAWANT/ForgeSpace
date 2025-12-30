@@ -8,6 +8,9 @@ import AnimatedBackground from '@/components/AnimatedBackground';
 export const metadata = {
   title: 'ForgeSpace - Developer Edition',
   description: 'Enterprise-grade, serverless collaboration platform for technical teams. Built with JetBrains Mono and a VS Code inspired aesthetic.',
+  icons: {
+    icon: '/forge-space.png',
+  },
 }
 
 export default async function RootLayout({ children }) {
