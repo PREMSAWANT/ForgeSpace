@@ -58,7 +58,7 @@ export default function LandingPage() {
                 <img 
                   src="/forge-space-bgremoved.png" 
                   alt="ForgeSpace Logo" 
-                  className="h-48 md:h-64 lg:h-80 w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.08)]"
+                  className="h-64 md:h-80 lg:h-[450px] w-auto object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
                 />
               </div>
               
