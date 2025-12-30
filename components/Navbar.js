@@ -8,7 +8,7 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="bg-grey-charcoal border-b border-grey-mid fixed top-0 left-0 right-0 z-50">
+    <nav className="border-b border-grey-border fixed top-0 left-0 right-0 z-50">
       <div className="flex items-center justify-between h-16 px-6">
         {/* Logo with Milker font */}
         <Link 
@@ -31,7 +31,7 @@ export default function Navbar() {
                   </div>
                   <div className="hidden md:block">
                     <div className="text-sm font-medium">{session.user.name}</div>
-                    <div className="text-xs text-muted">{session.user.email}</div>
+                    <div className="text-xs text-grey-muted">{session.user.email}</div>
                   </div>
                 </div>
                 

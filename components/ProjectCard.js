@@ -18,7 +18,7 @@ export default function ProjectCard({ project }) {
 
           {/* Description */}
           {project.description && (
-            <p className="text-secondary text-sm">
+            <p className="text-grey-muted text-sm leading-relaxed">
               {truncateText(project.description, 120)}
             </p>
           )}
@@ -44,7 +44,7 @@ export default function ProjectCard({ project }) {
 
           {/* File Count */}
           {project.files && project.files.length > 0 && (
-            <div className="text-xs text-muted pt-2 border-t border-grey-mid">
+            <div className="text-xs text-grey-muted pt-2 border-t border-grey-border">
               {project.files.length} file{project.files.length !== 1 ? 's' : ''}
             </div>
           )}

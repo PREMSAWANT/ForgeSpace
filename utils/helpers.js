@@ -44,6 +44,15 @@ export function formatDate(date) {
 }
 
 /**
+ * Format distance to now (alias for formatDate for better naming)
+ * @param {Date|String} date
+ * @returns {String}
+ */
+export function formatDistanceToNow(date) {
+  return formatDate(date);
+}
+
+/**
  * Get user initials for avatar
  * @param {String} name
  * @returns {String}
@@ -90,7 +99,7 @@ export function generateSlug(text) {
 export function getStatusColor(status) {
   const colors = {
     'active': 'bg-white text-black',
-    'on-hold': 'bg-grey-mid text-grey-soft',
+    'on-hold': 'bg-grey-border text-grey-soft',
     'completed': 'bg-grey-soft text-black',
     'archived': 'bg-grey-charcoal text-grey-muted'
   };

@@ -7,21 +7,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Professional Black & White Theme
+        // Strict Black & White Theme - Enterprise Grade
         black: {
-          DEFAULT: '#000000',
+          DEFAULT: '#000000',     // Pure Black - Primary background
           pure: '#000000',
         },
         white: {
-          DEFAULT: '#FFFFFF',
+          DEFAULT: '#FFFFFF',     // Pure White - Primary text and surfaces
           pure: '#FFFFFF',
         },
         grey: {
-          dark: '#0F0F0F',      // background depth
-          charcoal: '#1A1A1A',  // cards, panels
-          mid: '#2A2A2A',       // borders, dividers
-          soft: '#E5E5E5',      // secondary text
-          muted: '#9CA3AF',     // labels, hints
+          charcoal: '#0F0F0F',   // Deep Charcoal - App background depth
+          dark: '#1A1A1A',       // Dark Surface - Cards, panels, modals
+          border: '#2A2A2A',     // Border Grey - Borders, dividers, outlines
+          muted: '#9CA3AF',      // Muted Grey - Secondary text, labels, hints
+          soft: '#E5E5E5',       // Soft Grey - Subtle highlights, icons, inactive text
         },
       },
       fontFamily: {

@@ -26,14 +26,14 @@ export default function WorkspaceCard({ workspace, projectCount = 0 }) {
           <div className="flex gap-6 text-sm">
             <div className="flex flex-col">
               <span className="text-2xl font-bold">{projectCount}</span>
-              <span className="text-muted">Project{projectCount !== 1 ? 's' : ''}</span>
+              <span className="text-grey-muted">Project{projectCount !== 1 ? 's' : ''}</span>
             </div>
             
-            <div className="border-l border-grey-mid"></div>
+            <div className="border-l border-grey-border"></div>
             
             <div className="flex flex-col">
               <span className="text-2xl font-bold">{memberCount}</span>
-              <span className="text-muted">Member{memberCount !== 1 ? 's' : ''}</span>
+              <span className="text-grey-muted">Member{memberCount !== 1 ? 's' : ''}</span>
             </div>
           </div>
 
@@ -43,14 +43,14 @@ export default function WorkspaceCard({ workspace, projectCount = 0 }) {
               {workspace.members.slice(0, 5).map((member, index) => (
                 <div
                   key={index}
-                  className="w-8 h-8 rounded-full bg-grey-mid text-white flex items-center justify-center text-xs font-medium border-2 border-grey-charcoal"
+                  className="w-8 h-8 rounded-full bg-grey-dark text-white flex items-center justify-center text-xs font-medium border-2 border-grey-border"
                   title={member.userId?.name || 'Member'}
                 >
                   {getInitials(member.userId?.name || 'M')}
                 </div>
               ))}
               {workspace.members.length > 5 && (
-                <div className="w-8 h-8 rounded-full bg-grey-mid text-grey-muted flex items-center justify-center text-xs font-medium border-2 border-grey-charcoal">
+                <div className="w-8 h-8 rounded-full bg-grey-dark text-grey-muted flex items-center justify-center text-xs font-medium border-2 border-grey-border">
                   +{workspace.members.length - 5}
                 </div>
               )}
