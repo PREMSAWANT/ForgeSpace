@@ -218,7 +218,7 @@ export default function AuthTerminal({ mode = 'signin' }) {
                     onChange={(e) => setInput(e.target.value)}
                     placeholder={activeSteps[terminalStep].prompt}
                     autoFocus
-                    className="bg-transparent border-none outline-none flex-1 text-white placeholder:text-white/10"
+                    className="bg-transparent border-none outline-none flex-1 text-white placeholder:text-syntax-green/30"
                     required
                   />
                 </div>
