@@ -25,8 +25,8 @@ export default function SignInPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-12 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <Link href="/" className="logo text-4xl inline-block mb-4 hover:opacity-80 transition-opacity">
-            ForgeSpace
+          <Link href="/" className="inline-block mb-6 hover:opacity-80 transition-opacity">
+            <img src="/forge-space-bgremoved.png" alt="ForgeSpace" className="h-12 object-contain mx-auto" />
           </Link>
           <h1 className="text-3xl font-bold mb-2">Welcome Back</h1>
           <p className="text-grey-muted">Sign in to continue to your workspace</p>
