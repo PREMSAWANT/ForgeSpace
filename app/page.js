@@ -29,7 +29,7 @@ export default function LandingPage() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 items-start pt-4">
-              <Link href="/api/auth/signin" className="btn-primary group px-8 py-3.5 text-base">
+              <Link href="/auth/signin" className="btn-primary group px-8 py-3.5 text-base">
                 <span>Start Building</span>
                 <span className="ml-2 group-hover:translate-x-1 transition-transform font-mono">_&gt;</span>
               </Link>
@@ -174,7 +174,7 @@ export default function LandingPage() {
           <p className="text-xl text-grey-muted mb-12 max-w-2xl mx-auto">
             Join developers who value clean code and minimal design.
           </p>
-          <Link href="/api/auth/signin" className="btn-primary px-12 py-5 text-xl group">
+          <Link href="/auth/signin" className="btn-primary px-12 py-5 text-xl group">
             <span>Start Free</span>
             <span className="ml-3 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
@@ -218,9 +218,9 @@ export default function LandingPage() {
               © 2025 ForgeSpace. Built with focus on clean code and developer experience.
             </p>
             <div className="flex gap-6 text-sm text-grey-muted">
-              <Link href="#" className="hover:text-white transition-colors">Privacy</Link>
-              <Link href="#" className="hover:text-white transition-colors">Terms</Link>
-              <Link href="#" className="hover:text-white transition-colors">License</Link>
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+              <Link href="/license" className="hover:text-white transition-colors">License</Link>
             </div>
           </div>
         </div>

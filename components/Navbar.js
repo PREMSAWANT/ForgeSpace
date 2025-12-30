@@ -15,7 +15,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <Link 
             href="/" 
-            className="logo text-lg font-normal tracking-tight hover:text-white transition-colors"
+            className="text-lg font-bold tracking-tight hover:text-white transition-colors"
           >
             ForgeSpace
           </Link>
