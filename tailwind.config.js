@@ -23,9 +23,18 @@ module.exports = {
           muted: '#9CA3AF',      // Muted Grey - Secondary text, labels, hints
           soft: '#E5E5E5',       // Soft Grey - Subtle highlights, icons, inactive text
         },
+        // Syntax Accents - VS Code Inspiration
+        syntax: {
+          blue: '#3B82F6',
+          green: '#10B981',
+          orange: '#F59E0B',
+          purple: '#8B5CF6',
+          red: '#EF4444',
+        }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        sans: ['JetBrains Mono', 'monospace'],
+        mono: ['JetBrains Mono', 'monospace'],
       },
       spacing: {
         // Consistent spacing system: 4px, 8px, 16px, 24px, 32px, 48px
@@ -37,9 +46,11 @@ module.exports = {
         '12': '48px',
       },
       borderRadius: {
-        'sm': '4px',
-        'md': '8px',
-        'lg': '12px',
+        'none': '0',
+        'sm': '2px',
+        'md': '4px',
+        'lg': '6px',
+        'full': '9999px',
       },
       boxShadow: {
         'card': '0 2px 8px rgba(0, 0, 0, 0.3)',

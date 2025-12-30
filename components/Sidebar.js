@@ -16,33 +16,33 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className="fixed left-6 top-24 bottom-6 w-64 bg-grey-dark/40 backdrop-blur-xl p-4 flex flex-col justify-between border border-grey-border shadow-2xl z-40 rounded-2xl hidden md:flex">
-      <nav className="flex flex-col space-y-2 mt-2">
-        <div className="px-4 py-2 mb-4">
-          <h3 className="text-xs font-bold text-grey-muted uppercase tracking-widest">Navigation</h3>
+    <aside className="fixed left-6 top-20 bottom-6 w-60 bg-grey-dark/40 backdrop-blur-xl p-2 flex flex-col justify-between border border-grey-border z-40 rounded-md hidden md:flex">
+      <nav className="flex flex-col space-y-1 mt-2">
+        <div className="px-3 py-2 mb-2">
+          <h3 className="text-[10px] font-bold text-grey-muted uppercase tracking-[0.2em]">explorer</h3>
         </div>
         {navItems.map((item) => (
           <Link
             key={item.path}
             href={item.path}
-            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group ${
+            className={`flex items-center gap-3 px-3 py-2 rounded-sm transition-all duration-200 group ${
               isActive(item.path)
-                ? 'bg-grey-dark text-white shadow-lg border border-grey-border'
-                : 'text-grey-soft hover:bg-grey-dark hover:text-white hover:translate-x-1 border border-transparent'
+                ? 'bg-grey-charcoal text-white border-l-2 border-l-white border border-grey-border'
+                : 'text-grey-muted hover:bg-grey-charcoal/50 hover:text-white border border-transparent'
             }`}
           >
-            <span className={`text-xl transition-transform duration-300 ${isActive(item.path) ? 'scale-110 text-white' : 'group-hover:text-white'}`}>
+            <span className={`text-sm ${isActive(item.path) ? 'text-white' : 'group-hover:text-white'}`}>
               {item.icon}
             </span>
-            <span className="font-medium tracking-wide">{item.name}</span>
+            <span className="text-sm font-medium tracking-tight">{item.name}</span>
           </Link>
         ))}
       </nav>
 
-      <div className="p-4 border-t border-grey-border md:block hidden">
-        <div className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
-          <div className="w-2 h-2 rounded-full bg-white animate-pulse"></div>
-          <span className="mono text-xs text-grey-muted">System Operational</span>
+      <div className="p-3 border-t border-grey-border">
+        <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity cursor-pointer">
+          <div className="w-1.5 h-1.5 rounded-full bg-syntax-green animate-pulse"></div>
+          <span className="mono text-[10px] uppercase tracking-widest text-grey-muted">sys_ready</span>
         </div>
       </div>
     </aside>

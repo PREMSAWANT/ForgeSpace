@@ -9,15 +9,19 @@ export default function Navbar() {
   const { data: session } = useSession();
 
   return (
-    <nav className="border-b border-grey-border fixed top-0 left-0 right-0 z-50">
-      <div className="flex items-center justify-between h-16 px-6">
-        {/* Logo with Milker font */}
-        <Link 
-          href="/" 
-          className="logo text-2xl font-normal tracking-tight hover:opacity-80 transition-opacity"
-        >
-          ForgeSpace
-        </Link>
+    <nav className="border-b border-grey-border fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md">
+      <div className="flex items-center justify-between h-14 px-4">
+        {/* Logo with technical emphasis */}
+        <div className="flex items-center gap-4">
+          <Link 
+            href="/" 
+            className="logo text-xl font-normal tracking-tight hover:text-grey-soft transition-colors"
+          >
+            ForgeSpace
+          </Link>
+          <span className="text-grey-border">/</span>
+          <span className="mono text-[10px] uppercase tracking-widest text-grey-muted">main</span>
+        </div>
 
         {/* Right side navigation */}
         <div className="flex items-center gap-6">
