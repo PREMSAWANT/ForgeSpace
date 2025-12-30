@@ -37,34 +37,62 @@ export default function LandingPage() {
                 View Spec
               </Link>
             </div>
-
-            {/* Tech Stack */}
-            <div className="flex flex-wrap gap-2 items-center pt-8">
-              <span className="text-[10px] uppercase tracking-widest text-grey-muted mr-4">stack://</span>
-              {['Next.js', 'MongoDB', 'NextAuth', 'Cloudinary'].map((tech) => (
-                <span key={tech} className="px-2 py-1 text-[10px] mono border border-grey-border bg-grey-charcoal/30 text-grey-soft">{tech}</span>
-              ))}
-            </div>
           </div>
 
-          {/* Right Column: Prominent Logo Area */}
+          {/* Right Column: Prominent Logo Area with Editor Tabs */}
           <div className="relative flex justify-center lg:justify-end animate-in fade-in slide-in-from-right-12 duration-1000 delay-200">
-            <div className="relative group">
-              {/* Decorative Glow */}
-              <div className="absolute -inset-12 bg-white/5 blur-[100px] rounded-full group-hover:bg-white/10 transition-colors duration-700" />
-              
-              {/* Main Logo Container */}
-              <div className="relative z-10 p-0 transition-all duration-500 hover:scale-105">
+            <div className="relative group w-full max-w-2xl bg-grey-charcoal/30 backdrop-blur-md border border-white/5 rounded-lg overflow-hidden shadow-2xl transition-all duration-500 hover:border-white/10">
+              {/* Editor Tab Bar */}
+              <div className="flex bg-grey-dark/80 border-b border-white/5 items-center">
+                <div className="flex">
+                  <div className="px-4 py-3 bg-grey-charcoal border-r border-white/5 flex items-center gap-2 group/tab">
+                    <span className="text-syntax-blue text-xs">◆</span>
+                    <span className="text-xs text-white/90 font-medium">branding.asset</span>
+                    <span className="text-[10px] text-grey-muted opacity-0 group-hover/tab:opacity-100 transition-opacity ml-2">×</span>
+                  </div>
+                  <div className="px-4 py-3 border-r border-white/5 flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer group/tab">
+                    <span className="text-syntax-green text-xs">◎</span>
+                    <span className="text-xs text-grey-muted">identity.svg</span>
+                    <span className="text-[10px] text-grey-muted opacity-0 group-hover/tab:opacity-100 transition-opacity ml-2">×</span>
+                  </div>
+                  <div className="px-4 py-3 border-r border-white/5 flex items-center gap-2 hover:bg-white/5 transition-colors cursor-pointer hidden md:flex group/tab">
+                    <span className="text-syntax-orange text-xs">◈</span>
+                    <span className="text-xs text-grey-muted">spec.json</span>
+                    <span className="text-[10px] text-grey-muted opacity-0 group-hover/tab:opacity-100 transition-opacity ml-2">×</span>
+                  </div>
+                </div>
+                <div className="flex-1 flex justify-end px-3">
+                  <div className="flex gap-2">
+                    <div className="w-2 h-2 rounded-full border border-white/10"></div>
+                    <div className="w-2 h-2 rounded-full border border-white/10"></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Logo Content Pane */}
+              <div className="relative p-12 flex items-center justify-center min-h-[400px]">
+                {/* Decorative Glow */}
+                <div className="absolute inset-0 bg-white/5 blur-[100px] pointer-events-none" />
+                
                 <img 
                   src="/forge-space-bgremoved.png" 
                   alt="ForgeSpace Logo" 
-                  className="h-64 md:h-80 lg:h-[450px] w-auto object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.1)]"
+                  className="h-48 md:h-64 lg:h-72 w-auto object-contain drop-shadow-[0_0_50px_rgba(255,255,255,0.1)] relative z-10 transition-transform duration-700 hover:scale-110"
                 />
+
+                {/* Breadcrumbs Placeholder */}
+                <div className="absolute top-4 left-6 mono text-[10px] text-grey-muted/50 flex items-center gap-2">
+                  <span>assets</span>
+                  <span>/</span>
+                  <span>branding</span>
+                  <span>/</span>
+                  <span className="text-grey-muted">render.png</span>
+                </div>
               </div>
-              
+
               {/* Syntax Decorative Label */}
-              <div className="absolute -bottom-4 -right-4 bg-black border border-grey-border px-3 py-1.5 rounded-sm mono text-[10px] text-syntax-blue z-20">
-                LATEST_BUILD
+              <div className="absolute bottom-4 right-4 bg-black border border-grey-border px-3 py-1.5 rounded-sm mono text-[10px] text-syntax-blue z-20">
+                ACTIVE_TAB_VIEW
               </div>
             </div>
           </div>
