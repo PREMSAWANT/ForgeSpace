@@ -3,6 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
 import { getInitials } from '@/utils/helpers';
+import { Button, Avatar } from './ui';
 
 export default function Navbar() {
   const { data: session } = useSession();
@@ -26,9 +27,10 @@ export default function Navbar() {
               <div className="flex items-center gap-4">
                 <div className="flex items-center gap-3">
                   {/* Avatar */}
-                  <div className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center font-semibold text-sm">
-                    {getInitials(session.user.name)}
-                  </div>
+                  <Avatar 
+                    user={session.user} 
+                    size="md" 
+                  />
                   <div className="hidden md:block">
                     <div className="text-sm font-medium">{session.user.name}</div>
                     <div className="text-xs text-grey-muted">{session.user.email}</div>
@@ -36,17 +38,20 @@ export default function Navbar() {
                 </div>
                 
                 {/* Sign out button */}
-                <button
+                <Button
+                  variant="secondary"
+                  size="sm"
                   onClick={() => signOut()}
-                  className="btn-secondary text-sm px-4 py-2"
                 >
                   Sign Out
-                </button>
+                </Button>
               </div>
             </>
           ) : (
-            <Link href="/api/auth/signin" className="btn-primary px-6 py-2">
-              Sign In
+            <Link href="/api/auth/signin">
+              <Button variant="primary">
+                Sign In
+              </Button>
             </Link>
           )}
         </div>

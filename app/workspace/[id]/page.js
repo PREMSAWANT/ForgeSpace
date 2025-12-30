@@ -8,6 +8,7 @@ import Sidebar from '@/components/Sidebar';
 import ProjectCard from '@/components/ProjectCard';
 import ActivityLog from '@/components/ActivityLog';
 import { getInitials } from '@/utils/helpers';
+import { Button, Avatar, Badge, Card } from '@/components/ui';
 
 export default function WorkspacePage() {
   const params = useParams();
@@ -88,12 +89,12 @@ export default function WorkspacePage() {
             </div>
 
             <div className="flex gap-3">
-              <button className="btn-secondary">
+              <Button variant="secondary">
                 Invite Team
-              </button>
-              <button className="btn-primary">
+              </Button>
+              <Button variant="primary">
                 + New Project
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -131,11 +132,11 @@ export default function WorkspacePage() {
                   ))}
                 </div>
               ) : (
-                <div className="border border-dashed border-white/10 rounded-xl p-12 text-center hover:bg-white/5 transition-colors">
+                <div className="border border-dashed border-grey-border rounded-xl p-12 text-center hover:bg-grey-dark/30 transition-colors">
                   <div className="text-4xl opacity-30 mb-4">📂</div>
                   <h3 className="text-lg font-medium mb-2">No projects yet</h3>
-                  <p className="text-secondary text-sm mb-6">Launch your first project to get started.</p>
-                  <button className="btn-secondary text-sm">Create Project</button>
+                  <p className="text-grey-muted text-sm mb-6">Launch your first project to get started.</p>
+                  <Button variant="secondary" size="sm">Create Project</Button>
                 </div>
               )}
             </div>
@@ -148,9 +149,7 @@ export default function WorkspacePage() {
                   {workspace.members.map((member, index) => (
                     <div key={index} className="flex items-center justify-between p-4 hover:bg-white/5 transition-colors">
                       <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center text-xs font-bold border border-white/10">
-                          {getInitials(member.userId.name)}
-                        </div>
+                        <Avatar user={member.userId} size="sm" />
                         <div>
                           <div className="text-sm font-medium">{member.userId.name}</div>
                           <div className="text-xs text-grey-muted mono">{member.role}</div>
@@ -162,10 +161,10 @@ export default function WorkspacePage() {
                     </div>
                   ))}
                 </div>
-                <div className="p-3 bg-white/5 text-center">
-                  <button className="text-xs text-secondary hover:text-white font-medium w-full py-1">
+                <div className="p-3 bg-grey-dark/20 text-center">
+                  <Button variant="ghost" size="sm" className="w-full">
                     Manage Team Settings
-                  </button>
+                  </Button>
                 </div>
               </div>
 

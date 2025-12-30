@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { getInitials } from '@/utils/helpers';
+import { Avatar } from './ui';
 
 export default function WorkspaceCard({ workspace, projectCount = 0 }) {
   const memberCount = workspace.members?.length || 0;
@@ -16,9 +17,7 @@ export default function WorkspaceCard({ workspace, projectCount = 0 }) {
             
             {/* Owner Badge */}
             {workspace.ownerId && typeof workspace.ownerId === 'object' && (
-              <div className="w-8 h-8 rounded-full bg-white text-black flex items-center justify-center font-semibold text-xs">
-                {getInitials(workspace.ownerId.name)}
-              </div>
+              <Avatar user={workspace.ownerId} size="sm" />
             )}
           </div>
 
@@ -41,13 +40,12 @@ export default function WorkspaceCard({ workspace, projectCount = 0 }) {
           {workspace.members && workspace.members.length > 0 && (
             <div className="flex -space-x-2 pt-2">
               {workspace.members.slice(0, 5).map((member, index) => (
-                <div
+                <Avatar
                   key={index}
-                  className="w-8 h-8 rounded-full bg-grey-dark text-white flex items-center justify-center text-xs font-medium border-2 border-grey-border"
-                  title={member.userId?.name || 'Member'}
-                >
-                  {getInitials(member.userId?.name || 'M')}
-                </div>
+                  user={member.userId}
+                  size="sm"
+                  className="border-2 border-grey-charcoal"
+                />
               ))}
               {workspace.members.length > 5 && (
                 <div className="w-8 h-8 rounded-full bg-grey-dark text-grey-muted flex items-center justify-center text-xs font-medium border-2 border-grey-border">

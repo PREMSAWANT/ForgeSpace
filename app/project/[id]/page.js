@@ -7,7 +7,8 @@ import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import FileUploader from '@/components/FileUploader';
 import ActivityLog from '@/components/ActivityLog';
-import { formatDate, getStatusColor } from '@/utils/helpers';
+import { formatDate } from '@/utils/helpers';
+import { Button, Badge, Card, Avatar } from '@/components/ui';
 
 export default function ProjectPage() {
   const params = useParams();
@@ -79,18 +80,19 @@ export default function ProjectPage() {
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-3">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight">{project.title}</h1>
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wider border ${
-                        project.status === 'active' ? 'bg-grey-dark border-grey-border text-white' : 'bg-grey-dark border-grey-border text-grey-soft'
-                    }`}>
+                    <Badge 
+                      variant={project.status === 'active' ? 'primary' : 'outline'}
+                      size="md"
+                    >
                       {project.status.toUpperCase()}
-                    </span>
+                    </Badge>
                   </div>
                   <p className="text-grey-muted text-lg max-w-2xl leading-relaxed">{project.description}</p>
                 </div>
 
                 <div className="flex gap-3">
-                   <button className="btn-secondary">Settings</button>
-                   <button className="btn-primary">Deploy</button>
+                   <Button variant="secondary">Settings</Button>
+                   <Button variant="primary">Deploy</Button>
                 </div>
               </div>
            </div>
@@ -107,9 +109,9 @@ export default function ProjectPage() {
                              {tech}
                           </div>
                        ))}
-                       <button className="px-3 py-1.5 rounded border border-dashed border-white/20 text-sm text-secondary hover:text-white hover:border-white/40 transition-colors">
-                          + Add Tech
-                       </button>
+                       <Button variant="outline" size="sm" className="border-dashed">
+                           + Add Tech
+                       </Button>
                     </div>
                  </section>
 
@@ -132,9 +134,9 @@ export default function ProjectPage() {
                                          <div className="text-xs text-grey-muted mono">Updated {formatDate(file.uploadedAt)}</div>
                                       </div>
                                    </div>
-                                   <a href={file.url} target="_blank" className="btn-secondary text-xs px-3 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                      Download
-                                   </a>
+                                   <Button variant="secondary" size="sm" className="opacity-0 group-hover:opacity-100 transition-opacity">
+                                       Download
+                                   </Button>
                                 </div>
                              ))}
                           </div>
@@ -166,8 +168,8 @@ export default function ProjectPage() {
                     <div className="flex justify-between items-center py-2 mb-2">
                        <span className="text-secondary text-sm">Contributors</span>
                        <div className="flex -space-x-2">
-                          <div className="w-6 h-6 rounded-full bg-blue-500 border border-black"></div>
-                          <div className="w-6 h-6 rounded-full bg-purple-500 border border-black"></div>
+                          <Avatar size="sm" className="border-2 border-black shadow-lg" />
+                          <Avatar size="sm" className="border-2 border-black shadow-lg" />
                        </div>
                     </div>
                  </div>

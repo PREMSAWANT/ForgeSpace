@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { Card, Button } from './ui';
 
 export default function FileUploader({ projectId, onUploadComplete }) {
   const [isUploading, setIsUploading] = useState(false);
@@ -46,11 +47,11 @@ export default function FileUploader({ projectId, onUploadComplete }) {
   };
 
   return (
-    <div className="card">
+    <Card>
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Upload Files</h3>
         
-        <div className="border-2 border-dashed border-grey-mid rounded-lg p-8 text-center hover:border-grey-soft transition-colors">
+        <div className="border-2 border-dashed border-grey-border rounded-lg p-8 text-center hover:border-grey-soft transition-colors bg-grey-dark/20">
           <input
             type="file"
             multiple
@@ -63,10 +64,10 @@ export default function FileUploader({ projectId, onUploadComplete }) {
             <div className="space-y-2">
               <div className="text-4xl text-grey-muted">📁</div>
               <div>
-                <span className="text-white font-medium">Click to upload</span>
-                <span className="text-secondary"> or drag and drop</span>
+                <span className="text-white font-medium text-lg">Click to upload</span>
+                <span className="text-grey-muted"> or drag and drop</span>
               </div>
-              <p className="text-xs text-muted">
+              <p className="text-xs text-grey-muted uppercase tracking-widest font-bold opacity-60">
                 Documents, images, or any project files
               </p>
             </div>
@@ -74,12 +75,12 @@ export default function FileUploader({ projectId, onUploadComplete }) {
         </div>
 
         {isUploading && (
-          <div className="space-y-2">
+          <div className="space-y-3">
             <div className="flex justify-between text-sm">
-              <span className="text-secondary">Uploading...</span>
-              <span className="text-white">{Math.round(uploadProgress)}%</span>
+              <span className="text-grey-muted font-medium">Uploading...</span>
+              <span className="text-white font-bold">{Math.round(uploadProgress)}%</span>
             </div>
-            <div className="w-full bg-grey-mid rounded-full h-2">
+            <div className="w-full bg-grey-border rounded-full h-1.5 overflow-hidden">
               <div
                 className="bg-white h-2 rounded-full transition-all duration-300"
                 style={{ width: `${uploadProgress}%` }}
@@ -89,11 +90,11 @@ export default function FileUploader({ projectId, onUploadComplete }) {
         )}
 
         {error && (
-          <div className="p-4 bg-grey-dark border border-grey-mid rounded text-sm text-secondary">
-            Error: {error}
+          <div className="p-4 bg-grey-dark border border-grey-border rounded-xl text-sm text-grey-soft">
+            <span className="text-white font-bold mr-2">Error:</span> {error}
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

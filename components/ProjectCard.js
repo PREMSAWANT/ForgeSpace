@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import { truncateText, getStatusColor } from '@/utils/helpers';
+import { truncateText } from '@/utils/helpers';
+import { Badge } from './ui';
 
 export default function ProjectCard({ project }) {
   return (
@@ -11,9 +12,12 @@ export default function ProjectCard({ project }) {
             <h3 className="text-xl font-semibold group-hover:text-grey-soft transition-colors">
               {project.title}
             </h3>
-            <span className={`px-3 py-1 rounded text-xs font-medium ${getStatusColor(project.status)}`}>
+            <Badge 
+              variant={project.status === 'active' ? 'primary' : 'outline'}
+              size="sm"
+            >
               {project.status}
-            </span>
+            </Badge>
           </div>
 
           {/* Description */}
