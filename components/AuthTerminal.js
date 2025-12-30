@@ -3,34 +3,52 @@
 import { useState, useEffect, useRef } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { Button } from './ui';
+import { useRouter } from 'next/navigation';
 
 export default function AuthTerminal({ mode = 'signin' }) {
+  const router = useRouter();
   const [lines, setLines] = useState([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [currentStep, setCurrentStep] = useState('welcome'); // welcome, input-email, processing
+  const [terminalStep, setTerminalStep] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '',
+    username: '',
+    email: '',
+    phone: '',
+    password: '',
+    confirmPassword: ''
+  });
   const terminalRef = useRef(null);
 
+  const signinSteps = [
+    { key: 'username', label: 'IDENTIFY_USER', prompt: 'enter_username_or_email', type: 'text' },
+    { key: 'password', label: 'VERIFY_CREDENTIALS', prompt: 'enter_secure_password', type: 'password' }
+  ];
+
+  const signupSteps = [
+    { key: 'name', label: 'SET_DISPLAY_NAME', prompt: 'enter_full_name', type: 'text' },
+    { key: 'username', label: 'SET_USERNAME', prompt: 'enter_unique_username', type: 'text' },
+    { key: 'email', label: 'SET_EMAIL', prompt: 'enter_valid_email', type: 'email' },
+    { key: 'phone', label: 'SET_PHONE', prompt: 'enter_phone_number', type: 'tel' },
+    { key: 'password', label: 'SET_PASSWORD', prompt: 'create_secure_password', type: 'password' },
+    { key: 'confirmPassword', label: 'CONFIRM_PASSWORD', prompt: 're-enter_password', type: 'password' }
+  ];
+
+  const activeSteps = mode === 'signin' ? signinSteps : signupSteps;
   const title = mode === 'signin' ? 'FORGESPACE_USER_LOGIN' : 'FORGESPACE_USER_REGISTRATION';
   
   useEffect(() => {
     const welcomeSequence = async () => {
-      const messages = [
+      setLines([
         `[SYSTEM] Initializing ${title}...`,
         `[STATUS] Establishing SSH handshake... SUCCESS`,
-        `[INFO] Target: forgespace-prod-01`,
         mode === 'signin' 
-          ? '> Enter credentials to access workspace' 
-          : '> Initialize new developer profile',
+          ? '> Authentication required to access workspace' 
+          : '> System initialization: Defining new developer profile',
         `$ forge auth --${mode}`
-      ];
-
-      for (const msg of messages) {
-        setLines(prev => [...prev, msg]);
-        await new Promise(r => setTimeout(r, 400));
-      }
-      setCurrentStep('input-email');
+      ]);
+      setTerminalStep(0);
     };
 
     welcomeSequence();
@@ -42,32 +60,97 @@ export default function AuthTerminal({ mode = 'signin' }) {
     }
   }, [lines]);
 
-  const handleEmailSubmit = async (e) => {
+  const addLog = (msg, type = 'info') => {
+    const prefix = type === 'error' ? '[ERROR]' : type === 'success' ? '[SUCCESS]' : type === 'auth' ? '[AUTH]' : '[USER]';
+    setLines(prev => [...prev, `${prefix} ${msg}`]);
+  };
+
+  const handleStepSubmit = async (e) => {
     e.preventDefault();
     if (!input || isLoading) return;
 
-    const email = input;
-    setLines(prev => [...prev, `[USER] ${email}`, `[AUTH] Requesting magic-link for ${email}...`]);
-    setIsLoading(true);
-    setCurrentStep('processing');
+    const currentStepConfig = activeSteps[terminalStep];
+    const value = input;
+    
+    // Add user input to logs
+    addLog(currentStepConfig.type === 'password' ? '********' : value, 'user');
+    
+    // Update form data
+    const updatedData = { ...formData, [currentStepConfig.key]: value };
+    setFormData(updatedData);
+    setInput('');
 
-    try {
-      await signIn('email', { email, callbackUrl: '/dashboard', redirect: false });
-      setLines(prev => [
-        ...prev, 
-        `[SUCCESS] Magic link dispatched to ${email}`,
-        `[WAIT] Please check your inbox to complete initialization.`
-      ]);
-    } catch (err) {
-      setLines(prev => [...prev, `[ERROR] Failed to dispatch initialization link. Try again.`]);
-      setCurrentStep('input-email');
-    } finally {
-      setIsLoading(false);
+    // If more steps remain
+    if (terminalStep < activeSteps.length - 1) {
+      setTerminalStep(prev => prev + 1);
+    } else {
+      // Final execution
+      executeAuthFlow(updatedData);
+    }
+  };
+
+  const executeAuthFlow = async (data) => {
+    setIsLoading(true);
+    addLog(`Executing ${mode} sequence...`, 'auth');
+
+    if (mode === 'signup') {
+      if (data.password !== data.confirmPassword) {
+        addLog('Password mismatch detected.', 'error');
+        setTerminalStep(signupSteps.findIndex(s => s.key === 'password'));
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          addLog('Profile initialized successfully.', 'success');
+          addLog('Redirecting to login gateway...', 'auth');
+          setTimeout(() => router.push('/auth/signin'), 1500);
+        } else {
+          addLog(result.message || 'Initialization failed.', 'error');
+          setTerminalStep(0); // Restart
+        }
+      } catch (err) {
+        addLog('Critical system error during initialization.', 'error');
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      // Signin
+      try {
+        const res = await signIn('credentials', {
+          username: data.username,
+          password: data.password,
+          redirect: false,
+          callbackUrl: '/dashboard'
+        });
+
+        if (res.ok) {
+          addLog('Handshake successful. Session established.', 'success');
+          addLog('Loading workspace environment...', 'auth');
+          setTimeout(() => router.push('/dashboard'), 1500);
+        } else {
+          addLog(res.error || 'Authentication denied.', 'error');
+          setTerminalStep(0); // Restart
+        }
+      } catch (err) {
+        addLog('Authentication engine failure.', 'error');
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
 
   const handleOAuth = async (provider) => {
-    setLines(prev => [...prev, `[AUTH] Redirecting to ${provider} handshake...`]);
+    addLog(`Redirecting to ${provider} handshake...`, 'auth');
     setIsLoading(true);
     await signIn(provider, { callbackUrl: '/dashboard' });
   };
@@ -85,13 +168,13 @@ export default function AuthTerminal({ mode = 'signin' }) {
           <div className="text-[10px] text-grey-muted uppercase tracking-widest">
             {mode === 'signin' ? 'auth_session --login' : 'auth_session --register'}
           </div>
-          <div className="w-12"></div> {/* Spacer */}
+          <div className="w-12"></div>
         </div>
 
         {/* Terminal Body */}
         <div 
           ref={terminalRef}
-          className="p-6 h-[400px] overflow-y-auto text-sm leading-relaxed custom-scrollbar scroll-smooth"
+          className="p-6 h-[450px] overflow-y-auto text-sm leading-relaxed custom-scrollbar scroll-smooth"
         >
           {lines.map((line, i) => (
             <div 
@@ -109,44 +192,51 @@ export default function AuthTerminal({ mode = 'signin' }) {
             </div>
           ))}
 
-          {currentStep === 'input-email' && (
-            <form onSubmit={handleEmailSubmit} className="mt-4 flex flex-col gap-4">
-              <div className="flex items-center gap-2">
-                <span className="text-syntax-green">admin@fs:~$</span>
-                <input
-                  type="email"
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="enter_email_address"
-                  autoFocus
-                  className="bg-transparent border-none outline-none flex-1 text-white placeholder:text-white/20"
-                  required
-                />
-              </div>
-              
-              <div className="flex flex-wrap gap-4 pt-4 border-t border-white/5">
-                <button 
-                  type="button" 
-                  onClick={() => handleOAuth('google')}
-                  className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
-                >
-                  [ G ] AUTH_GOOGLE
-                </button>
-                <button 
-                  type="button" 
-                  onClick={() => handleOAuth('github')}
-                  className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
-                >
-                  [ H ] AUTH_GITHUB
-                </button>
+          {!isLoading && terminalStep < activeSteps.length && (
+            <form onSubmit={handleStepSubmit} className="mt-4 flex flex-col gap-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-[10px] text-syntax-blue uppercase tracking-widest opacity-70">
+                  {activeSteps[terminalStep].label}
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-syntax-green">admin@fs:~$</span>
+                  <input
+                    type={activeSteps[terminalStep].type}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder={activeSteps[terminalStep].prompt}
+                    autoFocus
+                    className="bg-transparent border-none outline-none flex-1 text-white placeholder:text-white/10"
+                    required
+                  />
+                </div>
               </div>
             </form>
           )}
 
-          {currentStep === 'processing' && (
+          {isLoading && (
             <div className="mt-4 flex items-center gap-2 text-syntax-blue animate-pulse">
               <span className="animate-spin inline-block">◌</span>
               SECURE_HANDSHAKE_IN_PROGRESS...
+            </div>
+          )}
+
+          {terminalStep === 0 && !isLoading && (
+            <div className="flex flex-wrap gap-4 pt-8 mt-8 border-t border-white/5">
+              <button 
+                type="button" 
+                onClick={() => handleOAuth('google')}
+                className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
+              >
+                [ G ] AUTH_GOOGLE
+              </button>
+              <button 
+                type="button" 
+                onClick={() => handleOAuth('github')}
+                className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
+              >
+                [ H ] AUTH_GITHUB
+              </button>
             </div>
           )}
         </div>
@@ -156,14 +246,14 @@ export default function AuthTerminal({ mode = 'signin' }) {
         {mode === 'signin' ? (
           <>
             New to ForgeSpace?{' '}
-            <Link href="/auth/signup" className="text-white hover:underline">
+            <Link href="/auth/signup" className="text-white hover:underline transition-colors">
               Initialize New Account
             </Link>
           </>
         ) : (
           <>
             Already initialized?{' '}
-            <Link href="/auth/signin" className="text-white hover:underline">
+            <Link href="/auth/signin" className="text-white hover:underline transition-colors">
               Access Existing Session
             </Link>
           </>
