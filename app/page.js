@@ -54,11 +54,11 @@ export default function LandingPage() {
               <div className="absolute -inset-12 bg-white/5 blur-[100px] rounded-full group-hover:bg-white/10 transition-colors duration-700" />
               
               {/* Main Logo Container */}
-              <div className="relative z-10 p-8 border border-white/5 bg-grey-charcoal/20 backdrop-blur-sm rounded-lg hover:border-white/10 transition-all duration-500">
+              <div className="relative z-10 p-0 transition-all duration-500 hover:scale-105">
                 <img 
                   src="/forge-space-bgremoved.png" 
                   alt="ForgeSpace Logo" 
-                  className="h-48 md:h-64 lg:h-80 w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+                  className="h-48 md:h-64 lg:h-80 w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.08)]"
                 />
               </div>
               
