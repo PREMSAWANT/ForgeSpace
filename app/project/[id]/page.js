@@ -45,7 +45,7 @@ export default function ProjectPage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-16">
-        <div className="text-muted mono">Loading project...</div>
+        <div className="text-grey-muted mono">Loading project...</div>
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default function ProjectPage() {
   if (!project) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-16">
-        <div className="text-muted">Project not found</div>
+        <div className="text-grey-muted">Project not found</div>
       </div>
     );
   }
@@ -68,7 +68,7 @@ export default function ProjectPage() {
            {/* Header */}
            <div className="mb-10">
               <div className="flex items-center gap-3 mb-4">
-                 <Link href={`/workspace/${project.workspaceId._id || '1'}`} className="text-secondary hover:text-white transition-colors text-sm">
+                 <Link href={`/workspace/${project.workspaceId._id || '1'}`} className="text-grey-soft hover:text-white transition-colors text-sm">
                     {project.workspaceId.name} 
                  </Link>
                  <span className="text-secondary/30">/</span>
@@ -80,12 +80,12 @@ export default function ProjectPage() {
                   <div className="flex items-center gap-4 mb-3">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight">{project.title}</h1>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold tracking-wider border ${
-                        project.status === 'active' ? 'bg-green-500/10 border-green-500/20 text-green-400' : 'bg-white/5 border-white/10 text-secondary'
+                        project.status === 'active' ? 'bg-grey-dark border-grey-border text-white' : 'bg-grey-dark border-grey-border text-grey-soft'
                     }`}>
                       {project.status.toUpperCase()}
                     </span>
                   </div>
-                  <p className="text-secondary text-lg max-w-2xl leading-relaxed">{project.description}</p>
+                  <p className="text-grey-muted text-lg max-w-2xl leading-relaxed">{project.description}</p>
                 </div>
 
                 <div className="flex gap-3">
@@ -129,7 +129,7 @@ export default function ProjectPage() {
                                       <div className="text-xl opacity-50 group-hover:opacity-100 transition-opacity">📄</div>
                                       <div>
                                          <div className="font-medium text-sm text-white group-hover:text-blue-400 transition-colors">{file.name}</div>
-                                         <div className="text-xs text-secondary mono">Updated {formatDate(file.uploadedAt)}</div>
+                                         <div className="text-xs text-grey-muted mono">Updated {formatDate(file.uploadedAt)}</div>
                                       </div>
                                    </div>
                                    <a href={file.url} target="_blank" className="btn-secondary text-xs px-3 py-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -139,7 +139,7 @@ export default function ProjectPage() {
                              ))}
                           </div>
                        ) : (
-                          <div className="p-8 text-center text-secondary">
+                          <div className="p-8 text-center text-grey-muted">
                              <div className="mb-2 opacity-50">No files uploaded yet</div>
                           </div>
                        )}

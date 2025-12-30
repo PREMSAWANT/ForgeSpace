@@ -45,7 +45,7 @@ export default function WorkspacePage() {
   if (status === 'loading' || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-16">
-        <div className="text-muted mono">Loading workspace...</div>
+        <div className="text-grey-muted mono">Loading workspace...</div>
       </div>
     );
   }
@@ -53,7 +53,7 @@ export default function WorkspacePage() {
   if (!workspace) {
     return (
       <div className="min-h-screen flex items-center justify-center pt-16">
-        <div className="text-muted">Workspace not found</div>
+        <div className="text-grey-muted">Workspace not found</div>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export default function WorkspacePage() {
           <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-8">
             <div>
               <div className="flex items-center gap-3 mb-3">
-                <Link href="/dashboard" className="text-secondary hover:text-white transition-colors">
+                <Link href="/dashboard" className="text-grey-soft hover:text-white transition-colors">
                   ← Back to Dashboard
                 </Link>
               </div>
@@ -79,9 +79,9 @@ export default function WorkspacePage() {
                 <h1 className="text-5xl font-bold tracking-tight">{workspace.name}</h1>
                 <span className="code text-sm opacity-50">/{params.id.slice(0, 8)}</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-secondary">
-                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/5">
-                   <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+              <div className="flex items-center gap-3 text-sm text-grey-soft">
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-grey-dark border border-grey-border">
+                   <div className="w-2 h-2 rounded-full bg-white"></div>
                    <span>Owner: <span className="text-white ml-1">{workspace.ownerId.name}</span></span>
                 </div>
               </div>
@@ -102,17 +102,17 @@ export default function WorkspacePage() {
             <div className="glass-card p-6 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-4xl">⚡</div>
               <div className="text-4xl font-bold mb-1">{projects.length}</div>
-              <div className="text-sm text-secondary font-medium tracking-wide">Active Projects</div>
+              <div className="text-sm text-grey-soft font-medium tracking-wide">Active Projects</div>
             </div>
-            <div className="glass-card p-6 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
+            <div className="glass-card p-6 rounded-2xl border border-grey-border bg-grey-dark/40 backdrop-blur-sm relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-4xl">👥</div>
               <div className="text-4xl font-bold mb-1">{workspace.members.length}</div>
-              <div className="text-sm text-secondary font-medium tracking-wide">Team Members</div>
+              <div className="text-sm text-grey-soft font-medium tracking-wide">Team Members</div>
             </div>
-            <div className="glass-card p-6 rounded-2xl border border-white/5 bg-white/5 backdrop-blur-sm relative overflow-hidden group">
+            <div className="glass-card p-6 rounded-2xl border border-grey-border bg-grey-dark/40 backdrop-blur-sm relative overflow-hidden group">
               <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-4xl">📈</div>
               <div className="text-4xl font-bold mb-1">{activities.length}</div>
-              <div className="text-sm text-secondary font-medium tracking-wide">Activities</div>
+              <div className="text-sm text-grey-soft font-medium tracking-wide">Activities</div>
             </div>
           </div>
 
@@ -153,7 +153,7 @@ export default function WorkspacePage() {
                         </div>
                         <div>
                           <div className="text-sm font-medium">{member.userId.name}</div>
-                          <div className="text-xs text-secondary mono">{member.role}</div>
+                          <div className="text-xs text-grey-muted mono">{member.role}</div>
                         </div>
                       </div>
                       {member.role === 'owner' && (
