@@ -4,6 +4,7 @@ import { authOptions } from '@/lib/auth';
 import SessionProvider from '@/components/SessionProvider';
 import Navbar from '@/components/Navbar';
 import AnimatedBackground from '@/components/AnimatedBackground';
+import ClientLayout from '@/components/ClientLayout';
 
 export const metadata = {
   title: 'ForgeSpace - Developer Edition',
@@ -33,11 +34,13 @@ export default async function RootLayout({ children }) {
         <div className="fixed top-0 left-0 right-0 h-[600px] bg-spotlight pointer-events-none z-0" />
         
         <SessionProvider session={session}>
-          {/* Main Layout Container */}
-          <div className="relative z-10 flex min-h-screen flex-col">
-            <Navbar />
-            {children}
-          </div>
+          <ClientLayout>
+            {/* Main Layout Container */}
+            <div className="relative z-10 flex min-h-screen flex-col">
+              <Navbar />
+              {children}
+            </div>
+          </ClientLayout>
         </SessionProvider>
       </body>
     </html>

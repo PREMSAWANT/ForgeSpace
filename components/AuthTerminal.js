@@ -40,14 +40,26 @@ export default function AuthTerminal({ mode = 'signin' }) {
   
   useEffect(() => {
     const welcomeSequence = async () => {
-      setLines([
+      const steps = [
         `[SYSTEM] Initializing ${title}...`,
         `[STATUS] Establishing SSH handshake... SUCCESS`,
         mode === 'signin' 
           ? '> Authentication required to access workspace' 
           : '> System initialization: Defining new developer profile',
         `$ forge auth --${mode}`
-      ]);
+      ];
+
+      // Clear lines first
+      setLines([]);
+      
+      // Add lines one by one with delay
+      for (let i = 0; i < steps.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 400));
+        setLines(prev => [...prev, steps[i]]);
+      }
+      
+      // Show first input step after animation
+      await new Promise(resolve => setTimeout(resolve, 300));
       setTerminalStep(0);
     };
 
