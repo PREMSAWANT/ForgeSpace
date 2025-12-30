@@ -13,10 +13,14 @@ export default function LandingPage() {
             <span className="mono text-sm text-grey-soft">Enterprise-Grade Collaboration</span>
           </div>
 
-          {/* Hero Title */}
-          <h1 className="logo-hero mb-6 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-            ForgeSpace
-          </h1>
+          {/* Hero Logo */}
+          <div className="flex justify-center mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
+            <img 
+              src="/forge-space-bgremoved.png" 
+              alt="ForgeSpace Logo" 
+              className="h-24 md:h-32 object-contain"
+            />
+          </div>
           
           <p className="text-2xl md:text-3xl text-grey-soft font-light mb-4 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
             A <span className="text-white font-medium">serverless collaboration platform</span> built for developers who value clean code, minimal design, and professional workflows.
@@ -134,7 +138,9 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
-              <h3 className="logo text-2xl mb-4">ForgeSpace</h3>
+              <div className="flex items-center gap-3 mb-4">
+                <img src="/forge-space-bgremoved.png" alt="ForgeSpace" className="h-8 object-contain" />
+              </div>
               <p className="text-grey-muted text-sm max-w-sm">
                 A serverless collaboration platform built for developers who value clean code and professional workflows.
               </p>
