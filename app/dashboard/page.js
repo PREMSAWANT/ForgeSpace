@@ -13,6 +13,14 @@ export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   
+  // Dynamic greeting based on time
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return 'Good morning';
+    if (hour < 18) return 'Good afternoon';
+    return 'Good evening';
+  };
+  
   // MOCK DATA FOR FRONTEND DEVELOPMENT
   const mockWorkspaces = [
     { _id: '1', name: 'Engineering', ownerId: { name: 'Demo User' }, projects: [1,2], members: [1,2,3,4] },
@@ -98,7 +106,7 @@ export default function DashboardPage() {
               <span className="mono text-xs uppercase tracking-widest text-grey-muted">{new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
-              Good evening, {session?.user?.name?.split(' ')[0]}
+              {getGreeting()}, {session?.user?.name?.split(' ')[0] || 'Developer'}
             </h1>
             <p className="text-secondary text-lg font-light max-w-xl">
               You have <span className="text-white font-medium">3 active projects</span> pending review this week.

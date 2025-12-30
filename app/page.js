@@ -198,8 +198,8 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4 text-sm">Product</h4>
               <ul className="space-y-2 text-sm text-grey-muted">
                 <li><Link href="#features" className="hover:text-white transition-colors">Features</Link></li>
-                <li><Link href="/dashboard" className="hover:text-white transition-colors">Dashboard</Link></li>
-                <li><Link href="/api/auth/signin" className="hover:text-white transition-colors">Sign In</Link></li>
+                <li><Link href="/auth/signin" className="hover:text-white transition-colors mono text-xs">init_session</Link></li>
+                <li><Link href="/auth/signup" className="hover:text-white transition-colors mono text-xs">create_account</Link></li>
               </ul>
             </div>
             

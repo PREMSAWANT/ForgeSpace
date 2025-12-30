@@ -222,42 +222,44 @@ export default function AuthTerminal({ mode = 'signin' }) {
           )}
 
           {terminalStep === 0 && !isLoading && (
-            <div className="flex flex-wrap gap-4 pt-8 mt-8 border-t border-white/5">
-              <button 
-                type="button" 
-                onClick={() => handleOAuth('google')}
-                className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
-              >
-                [ G ] AUTH_GOOGLE
-              </button>
-              <button 
-                type="button" 
-                onClick={() => handleOAuth('github')}
-                className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
-              >
-                [ H ] AUTH_GITHUB
-              </button>
-            </div>
+            <>
+              <div className="flex flex-wrap gap-4 pt-8 mt-8 border-t border-white/5">
+                <button 
+                  type="button" 
+                  onClick={() => handleOAuth('google')}
+                  className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
+                >
+                  [ G ] AUTH_GOOGLE
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => handleOAuth('github')}
+                  className="text-xs text-grey-muted hover:text-white transition-colors flex items-center gap-2"
+                >
+                  [ H ] AUTH_GITHUB
+                </button>
+              </div>
+              
+              <div className="mt-6 text-center text-xs text-grey-muted">
+                {mode === 'signin' ? (
+                  <>
+                    New to ForgeSpace?{' '}
+                    <Link href="/auth/signup" className="text-white hover:underline transition-colors">
+                      Initialize New Account
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    Already initialized?{' '}
+                    <Link href="/auth/signin" className="text-white hover:underline transition-colors">
+                      Access Existing Session
+                    </Link>
+                  </>
+                )}
+              </div>
+            </>
           )}
         </div>
-      </div>
-
-      <div className="mt-8 text-center text-xs text-grey-muted">
-        {mode === 'signin' ? (
-          <>
-            New to ForgeSpace?{' '}
-            <Link href="/auth/signup" className="text-white hover:underline transition-colors">
-              Initialize New Account
-            </Link>
-          </>
-        ) : (
-          <>
-            Already initialized?{' '}
-            <Link href="/auth/signin" className="text-white hover:underline transition-colors">
-              Access Existing Session
-            </Link>
-          </>
-        )}
       </div>
     </div>
   );

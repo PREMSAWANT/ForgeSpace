@@ -52,11 +52,18 @@ export default function Navbar() {
               </div>
             </>
           ) : (
-            <Link href="/api/auth/signin">
-              <Button variant="primary">
-                Sign In
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href="/auth/signin">
+                <Button variant="secondary" size="sm">
+                  <span className="mono text-xs">init_session</span>
+                </Button>
+              </Link>
+              <Link href="/auth/signup">
+                <Button variant="primary" size="sm">
+                  <span className="mono text-xs">create_account</span>
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
       </div>
