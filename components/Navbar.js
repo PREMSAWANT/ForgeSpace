@@ -17,7 +17,7 @@ export default function Navbar() {
             href="/" 
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
-            <img src="/forge-space-bgremoved.png" alt="ForgeSpace" className="h-6 object-contain" />
+            <img src="/forge-space-bgremoved.png" alt="ForgeSpace" className="h-8 object-contain" />
           </Link>
           <span className="text-grey-border">/</span>
           <span className="mono text-[10px] uppercase tracking-widest text-grey-muted">main</span>

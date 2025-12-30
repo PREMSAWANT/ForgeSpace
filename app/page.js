@@ -5,48 +5,68 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 overflow-hidden">
-        <div className="max-w-6xl mx-auto text-center pt-20 pb-32">
-          {/* Top Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 bg-grey-dark/50 backdrop-blur-sm border border-grey-border rounded-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-            <span className="mono text-sm text-grey-soft">Enterprise-Grade Collaboration</span>
+      <section className="relative min-h-[90vh] flex items-center justify-center px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full grid lg:grid-cols-2 gap-12 items-center pt-24 pb-32">
+          {/* Left Column: Text Content */}
+          <div className="text-left space-y-8 animate-in fade-in slide-in-from-bottom-8 duration-700">
+            {/* Top Badge */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-grey-dark/50 backdrop-blur-sm border border-grey-border rounded-sm">
+              <span className="w-1.5 h-1.5 bg-syntax-green rounded-full animate-pulse"></span>
+              <span className="mono text-[10px] uppercase tracking-[0.2em] text-grey-soft">v2.0.0_stable</span>
+            </div>
+
+            <div className="space-y-6">
+              <h1 className="text-5xl md:text-7xl font-bold tracking-tighter leading-[1.1]">
+                Technical <br />
+                <span className="text-grey-muted">Collaboration</span> <br />
+                Refined.
+              </h1>
+              
+              <p className="text-xl md:text-2xl text-grey-soft font-light max-w-xl leading-relaxed">
+                ForgeSpace: A <span className="text-white font-medium mono decoration-syntax-blue underline underline-offset-4">serverless hub</span> for builders who prioritize clean code and minimalist engineering.
+              </p>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 items-start pt-4">
+              <Link href="/api/auth/signin" className="btn-primary group px-8 py-3.5 text-base">
+                <span>Start Building</span>
+                <span className="ml-2 group-hover:translate-x-1 transition-transform font-mono">_&gt;</span>
+              </Link>
+              <Link href="#features" className="btn-secondary px-8 py-3.5 text-base">
+                View Spec
+              </Link>
+            </div>
+
+            {/* Tech Stack */}
+            <div className="flex flex-wrap gap-2 items-center pt-8">
+              <span className="text-[10px] uppercase tracking-widest text-grey-muted mr-4">stack://</span>
+              {['Next.js', 'MongoDB', 'NextAuth', 'Cloudinary'].map((tech) => (
+                <span key={tech} className="px-2 py-1 text-[10px] mono border border-grey-border bg-grey-charcoal/30 text-grey-soft">{tech}</span>
+              ))}
+            </div>
           </div>
 
-          {/* Hero Logo */}
-          <div className="flex justify-center mb-8 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-100">
-            <img 
-              src="/forge-space-bgremoved.png" 
-              alt="ForgeSpace Logo" 
-              className="h-24 md:h-32 object-contain"
-            />
-          </div>
-          
-          <p className="text-2xl md:text-3xl text-grey-soft font-light mb-4 max-w-3xl mx-auto leading-relaxed animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
-            A <span className="text-white font-medium">serverless collaboration platform</span> built for developers who value clean code, minimal design, and professional workflows.
-          </p>
-
-          <p className="text-lg text-grey-muted mb-12 max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-8 duration-700 delay-300">
-            Manage projects, collaborate with teams, and track progress—without the bloat.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-400">
-            <Link href="/api/auth/signin" className="btn-primary group px-8 py-4 text-lg">
-              <span>Get Started</span>
-              <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
-            </Link>
-            <Link href="#features" className="btn-secondary px-8 py-4 text-lg">
-              Explore Features
-            </Link>
-          </div>
-
-          {/* Tech Stack */}
-          <div className="flex flex-wrap gap-3 justify-center items-center animate-in fade-in slide-in-from-bottom-8 duration-700 delay-500">
-            <span className="text-sm text-grey-muted">Built with</span>
-            {['Next.js', 'MongoDB', 'NextAuth', 'TailwindCSS', 'Vercel'].map((tech) => (
-              <span key={tech} className="tech-badge">{tech}</span>
-            ))}
+          {/* Right Column: Prominent Logo Area */}
+          <div className="relative flex justify-center lg:justify-end animate-in fade-in slide-in-from-right-12 duration-1000 delay-200">
+            <div className="relative group">
+              {/* Decorative Glow */}
+              <div className="absolute -inset-12 bg-white/5 blur-[100px] rounded-full group-hover:bg-white/10 transition-colors duration-700" />
+              
+              {/* Main Logo Container */}
+              <div className="relative z-10 p-8 border border-white/5 bg-grey-charcoal/20 backdrop-blur-sm rounded-lg hover:border-white/10 transition-all duration-500">
+                <img 
+                  src="/forge-space-bgremoved.png" 
+                  alt="ForgeSpace Logo" 
+                  className="h-48 md:h-64 lg:h-80 w-auto object-contain drop-shadow-[0_0_30px_rgba(255,255,255,0.05)]"
+                />
+              </div>
+              
+              {/* Syntax Decorative Label */}
+              <div className="absolute -bottom-4 -right-4 bg-black border border-grey-border px-3 py-1.5 rounded-sm mono text-[10px] text-syntax-blue z-20">
+                LATEST_BUILD
+              </div>
+            </div>
           </div>
         </div>
 
