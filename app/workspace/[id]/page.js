@@ -18,6 +18,11 @@ export default function WorkspacePage() {
   const [projects, setProjects] = useState([]);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isInviting, setIsInviting] = useState(false);
+  const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState('member');
+  const [invitingStatus, setInvitingStatus] = useState('idle'); // idle, loading, success, error
+  const [inviteError, setInviteError] = useState('');
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -26,22 +31,80 @@ export default function WorkspacePage() {
   }, [status, router]);
 
   useEffect(() => {
+    const fetchWorkspaceData = async () => {
+      if (!session || !params.id) return;
+      
+      try {
+        setLoading(true);
+        
+        // Fetch workspace metadata, projects, and activities in parallel
+        const [workspaceRes, projectsRes, activitiesRes] = await Promise.all([
+          fetch(`/api/workspace/${params.id}`),
+          fetch(`/api/project?workspaceId=${params.id}`),
+          fetch(`/api/activity?workspaceId=${params.id}&limit=10`)
+        ]);
+
+        if (workspaceRes.status === 404) {
+          setWorkspace(null);
+          return;
+        }
+
+        if (!workspaceRes.ok || !projectsRes.ok || !activitiesRes.ok) {
+          throw new Error('Failed to fetch workspace information');
+        }
+
+        const workspaceData = await workspaceRes.json();
+        const projectsData = await projectsRes.json();
+        const activitiesData = await activitiesRes.json();
+
+        setWorkspace(workspaceData.workspace);
+        setProjects(projectsData.projects || []);
+        setActivities(activitiesData.activities || []);
+      } catch (error) {
+        console.error('Error fetching workspace data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (session && params.id) {
-      // Fetch workspace data
-      // For now, placeholder data
-      setWorkspace({
-        _id: params.id,
-        name: 'Engineering Workspace',
-        ownerId: { name: session.user.name, email: session.user.email },
-        members: [
-          { userId: { name: session.user.name }, role: 'owner' }
-        ]
-      });
-      setProjects([]);
-      setActivities([]);
-      setLoading(false);
+      fetchWorkspaceData();
     }
   }, [session, params.id]);
+
+  const handleInvite = async (e) => {
+    e.preventDefault();
+    if (!inviteEmail) return;
+
+    try {
+      setInvitingStatus('loading');
+      setInviteError('');
+
+      const res = await fetch(`/api/workspace/${params.id}/members`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: inviteEmail, role: inviteRole })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to invite member');
+      }
+
+      // Update local workspace state with new members
+      setWorkspace(data.workspace);
+      setInvitingStatus('success');
+      setInviteEmail('');
+      setTimeout(() => {
+        setIsInviting(false);
+        setInvitingStatus('idle');
+      }, 2000);
+    } catch (err) {
+      setInviteError(err.message);
+      setInvitingStatus('error');
+    }
+  };
 
   if (status === 'loading' || loading) {
     return (
@@ -89,12 +152,14 @@ export default function WorkspacePage() {
             </div>
 
             <div className="flex gap-3">
-              <Button variant="secondary">
+              <Button variant="secondary" onClick={() => setIsInviting(true)}>
                 Invite Team
               </Button>
-              <Button variant="primary">
-                + New Project
-              </Button>
+              <Link href={`/project/new?workspace=${workspace._id}`}>
+                <Button variant="primary">
+                  + New Project
+                </Button>
+              </Link>
             </div>
           </div>
 
@@ -177,6 +242,82 @@ export default function WorkspacePage() {
           </div>
         </div>
       </main>
+
+      {/* Invite Member Modal */}
+      {isInviting && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300">
+          <Card className="max-w-md w-full p-8 relative animate-in zoom-in-95 duration-300">
+            <button 
+              onClick={() => setIsInviting(false)}
+              className="absolute top-4 right-4 text-grey-muted hover:text-white transition-colors"
+            >
+              ✕
+            </button>
+            <h2 className="text-2xl font-bold mb-2">Invite Collaborator</h2>
+            <p className="text-grey-muted text-sm mb-6">
+              Add a developer to your workspace by their email address.
+            </p>
+
+            <form onSubmit={handleInvite} className="space-y-4">
+              <div className="space-y-2">
+                <label className="text-xs uppercase tracking-widest text-grey-soft font-bold">Developer Email</label>
+                <input
+                  type="email"
+                  value={inviteEmail}
+                  onChange={(e) => setInviteEmail(e.target.value)}
+                  placeholder="name@email.com"
+                  className="w-full bg-grey-dark border border-grey-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/20 transition-all font-mono text-sm"
+                  required
+                />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-xs uppercase tracking-widest text-grey-soft font-bold">Workspace Role</label>
+                <select
+                  value={inviteRole}
+                  onChange={(e) => setInviteRole(e.target.value)}
+                  className="w-full bg-grey-dark border border-grey-border rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/20 transition-all"
+                >
+                  <option value="member">Member (Read/Write)</option>
+                  <option value="admin">Admin (Full Control)</option>
+                  <option value="viewer">Viewer (Read Only)</option>
+                </select>
+              </div>
+
+              {inviteError && (
+                <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 text-xs">
+                  {inviteError}
+                </div>
+              )}
+
+              {invitingStatus === 'success' && (
+                <div className="p-3 rounded-lg bg-green-500/10 border border-green-500/20 text-green-500 text-xs">
+                  Success! Collaborator added to your team.
+                </div>
+              )}
+
+              <div className="flex gap-3 pt-4">
+                <Button 
+                  type="button" 
+                  variant="secondary" 
+                  className="flex-1"
+                  onClick={() => setIsInviting(false)}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  variant="primary" 
+                  className="flex-1"
+                  disabled={invitingStatus === 'loading' || invitingStatus === 'success'}
+                >
+                  {invitingStatus === 'loading' ? 'Inviting...' : 'Send Invite'}
+                </Button>
+              </div>
+            </form>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

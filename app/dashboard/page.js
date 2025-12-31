@@ -21,51 +21,54 @@ export default function DashboardPage() {
     return 'Good evening';
   };
   
-  // MOCK DATA FOR FRONTEND DEVELOPMENT
-  const mockWorkspaces = [
-    { _id: '1', name: 'Engineering', ownerId: { name: 'Demo User' }, projects: [1,2], members: [1,2,3,4] },
-    { _id: '2', name: 'Marketing', ownerId: { name: 'Demo User' }, projects: [1], members: [1,2] },
-    { _id: '3', name: 'Design System', ownerId: { name: 'Demo User' }, projects: [], members: [1,2,3] }
-  ];
-
-  const mockActivities = [
-    { user: { name: 'Alice', image: null }, action: 'deployed', target: 'production', createdAt: new Date() },
-    { user: { name: 'Bob', image: null }, action: 'created', target: 'new-feature', createdAt: new Date(Date.now() - 3600000) }
-  ];
-
-  const workspaces = mockWorkspaces;
-  const activities = mockActivities;
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate initial load
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
-  // END MOCK DATA
-
-  /* 
-  // Real Data Fetching (Disabled for UI Dev)
   const [workspaces, setWorkspaces] = useState([]);
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/api/auth/signin');
+      router.push('/auth/signin');
     }
   }, [status, router]);
 
   useEffect(() => {
+    const fetchDashboardData = async () => {
+      if (!session) return;
+      
+      try {
+        setLoading(true);
+        setError(null);
+
+        // Fetch workspaces and activities in parallel
+        const [workspacesRes, activitiesRes] = await Promise.all([
+          fetch('/api/workspace'),
+          fetch('/api/activity?limit=5')
+        ]);
+
+        if (!workspacesRes.ok || !activitiesRes.ok) {
+          throw new Error('Failed to fetch dashboard data');
+        }
+
+        const workspacesData = await workspacesRes.json();
+        const activitiesData = await activitiesRes.json();
+
+        setWorkspaces(workspacesData.workspaces || []);
+        setActivities(activitiesData.activities || []);
+      } catch (err) {
+        console.error('Dashboard fetch error:', err);
+        setError('Failed to load dashboard data. Please refresh.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (session) {
-      // Fetch user's workspaces and activities
-      // For now, using placeholder data
-      setWorkspaces([]);
-      setActivities([]);
-      setLoading(false);
+      fetchDashboardData();
     }
   }, [session]);
-  */
+
+  const activeProjectsCount = workspaces.reduce((acc, ws) => acc + (ws.projectCount || 0), 0);
 
   if (status === 'loading' || loading) {
     return (
@@ -105,11 +108,16 @@ export default function DashboardPage() {
               <span className="h-px w-8 bg-grey-border"></span>
               <span className="mono text-xs uppercase tracking-widest text-grey-muted">{new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' })}</span>
             </div>
+            {error && (
+              <div className="bg-syntax-red/10 border border-syntax-red/20 text-syntax-red px-4 py-2 rounded text-sm mb-4">
+                {error}
+              </div>
+            )}
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-2">
               {getGreeting()}, {session?.user?.name?.split(' ')[0] || 'Developer'}
             </h1>
             <p className="text-secondary text-lg font-light max-w-xl">
-              You have <span className="text-white font-medium">3 active projects</span> pending review this week.
+              You have <span className="text-white font-medium">{activeProjectsCount} active projects</span> across your workspaces.
             </p>
           </div>
           
@@ -131,7 +139,11 @@ export default function DashboardPage() {
           {workspaces.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {workspaces.map((workspace) => (
-                <WorkspaceCard key={workspace._id} workspace={workspace} />
+                <WorkspaceCard 
+                  key={workspace._id} 
+                  workspace={workspace} 
+                  projectCount={workspace.projectCount} 
+                />
               ))}
             </div>
           ) : (

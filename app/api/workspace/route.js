@@ -26,9 +26,18 @@ export async function GET(request) {
         { ownerId: session.user.id },
         { 'members.userId': session.user.id }
       ]
-    }).populate('ownerId', 'name email image');
+    }).populate('ownerId', 'name email image').lean();
 
-    return NextResponse.json({ workspaces }, { status: 200 });
+    // Add project count to each workspace
+    const workspacesWithCounts = await Promise.all(workspaces.map(async (workspace) => {
+      const projectCount = await Project.countDocuments({ workspaceId: workspace._id });
+      return {
+        ...workspace,
+        projectCount
+      };
+    }));
+
+    return NextResponse.json({ workspaces: workspacesWithCounts }, { status: 200 });
   } catch (error) {
     console.error('Error fetching workspaces:', error);
     return NextResponse.json({ error: 'Failed to fetch workspaces' }, { status: 500 });
