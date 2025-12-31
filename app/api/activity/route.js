@@ -15,22 +15,19 @@ export async function GET(request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const connection = await dbConnect();
+    await dbConnect();
     
-    // Return empty array if no database connection (build time or missing env)
-    if (!connection) {
-      return NextResponse.json({ activities: [] }, { status: 200 });
-    }
-
     const { searchParams } = new URL(request.url);
     const workspaceId = searchParams.get('workspaceId');
     const projectId = searchParams.get('projectId');
     const limit = parseInt(searchParams.get('limit')) || 20;
+    const page = parseInt(searchParams.get('page')) || 1;
+    const skip = (page - 1) * limit;
 
     let query = {};
 
-    // Verify access if filtering by workspace or project
     if (workspaceId) {
+      // Verify access to specific workspace
       const workspace = await Workspace.findById(workspaceId);
       
       if (!workspace) {
@@ -45,9 +42,8 @@ export async function GET(request) {
       }
 
       query.workspaceId = workspaceId;
-    }
-
-    if (projectId) {
+    } else if (projectId) {
+      // Verify access via project's workspace
       const project = await Project.findById(projectId).populate('workspaceId');
       
       if (!project) {
@@ -63,15 +59,40 @@ export async function GET(request) {
       }
 
       query.projectId = projectId;
+    } else {
+      // Security: If no ID provided, only show activities from user's workspaces
+      const userWorkspaces = await Workspace.find({
+        $or: [
+          { ownerId: session.user.id },
+          { 'members.userId': session.user.id }
+        ]
+      }).select('_id');
+
+      const workspaceIds = userWorkspaces.map(w => w._id);
+      query.workspaceId = { $in: workspaceIds };
     }
+
+    // Get total count for pagination
+    const total = await Activity.countDocuments(query);
 
     // Get activities
     const activities = await Activity.find(query)
       .sort({ timestamp: -1 })
+      .skip(skip)
       .limit(limit)
-      .populate('userId', 'name email image');
+      .populate('userId', 'name email image')
+      .populate('projectId', 'title')
+      .populate('workspaceId', 'name');
 
-    return NextResponse.json({ activities }, { status: 200 });
+    return NextResponse.json({ 
+      activities,
+      pagination: {
+        total,
+        page,
+        limit,
+        pages: Math.ceil(total / limit)
+      }
+    }, { status: 200 });
   } catch (error) {
     console.error('Error fetching activities:', error);
     return NextResponse.json({ error: 'Failed to fetch activities' }, { status: 500 });
