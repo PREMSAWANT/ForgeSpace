@@ -1,18 +1,36 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const [workspaces, setWorkspaces] = useState([]);
+
+  useEffect(() => {
+    const fetchWorkspaces = async () => {
+      if (!session) return;
+      try {
+        const res = await fetch('/api/workspace');
+        if (res.ok) {
+          const data = await res.json();
+          setWorkspaces(data.workspaces || []);
+        }
+      } catch (error) {
+        console.error('Sidebar workspace fetch error:', error);
+      }
+    };
+
+    fetchWorkspaces();
+  }, [session]);
 
   const isActive = (path) => pathname === path;
 
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: '◆' },
-    { name: 'Workspaces', path: '/workspaces', icon: '▣' },
-    { name: 'Projects', path: '/projects', icon: '◉' },
-    { name: 'Activity', path: '/activity', icon: '◐' },
+    { name: 'Operational Logs', path: '/activity', icon: '◐' },
   ];
 
   return (
@@ -37,6 +55,28 @@ export default function Sidebar() {
             <span className="text-sm font-medium tracking-tight">{item.name}</span>
           </Link>
         ))}
+
+        {workspaces.length > 0 && (
+          <div className="pt-6 pb-2">
+            <div className="px-3 py-2 mb-1">
+              <h3 className="text-[10px] font-bold text-grey-muted uppercase tracking-[0.2em]">workspaces</h3>
+            </div>
+            {workspaces.map((ws) => (
+              <Link
+                key={ws._id}
+                href={`/workspace/${ws._id}`}
+                className={`flex items-center gap-3 px-3 py-1.5 rounded-sm transition-all duration-200 group ${
+                  pathname.includes(`/workspace/${ws._id}`)
+                    ? 'text-white font-semibold'
+                    : 'text-grey-muted hover:text-white'
+                }`}
+              >
+                <span className="text-secondary opacity-40 group-hover:opacity-100 text-xs">▣</span>
+                <span className="text-[13px] truncate">{ws.name}</span>
+              </Link>
+            ))}
+          </div>
+        )}
       </nav>
 
       <div className="p-3 border-t border-grey-border">

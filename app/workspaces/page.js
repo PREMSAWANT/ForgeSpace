@@ -14,24 +14,37 @@ export default function WorkspacesPage() {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Realistically this would be a fetch from /api/workspace
-  const [workspaces, setWorkspaces] = useState([
-    { _id: '1', name: 'Engineering', ownerId: { name: 'Demo User' }, members: [1,2,3,4] },
-    { _id: '2', name: 'Marketing', ownerId: { name: 'Demo User' }, members: [1,2] },
-    { _id: '3', name: 'Design System', ownerId: { name: 'Demo User' }, members: [1,2,3] },
-    { _id: '4', name: 'Product Growth', ownerId: { name: 'Demo User' }, members: [1,2,3,4,5,6] }
-  ]);
+  const [workspaces, setWorkspaces] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/api/auth/signin');
+      router.push('/auth/signin');
     }
   }, [status, router]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+    const fetchWorkspaces = async () => {
+      if (!session) return;
+      
+      try {
+        setLoading(true);
+        const res = await fetch('/api/workspace');
+        if (!res.ok) throw new Error('Failed to fetch workspaces');
+        const data = await res.json();
+        setWorkspaces(data.workspaces || []);
+      } catch (err) {
+        console.error('Error fetching workspaces:', err);
+        setError('Could not load workspaces.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      fetchWorkspaces();
+    }
+  }, [session]);
 
   const filteredWorkspaces = workspaces.filter(ws => 
     ws.name.toLowerCase().includes(searchQuery.toLowerCase())

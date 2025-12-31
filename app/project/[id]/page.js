@@ -25,23 +25,65 @@ export default function ProjectPage() {
   }, [status, router]);
 
   useEffect(() => {
+    const fetchProjectData = async () => {
+      if (!session || !params.id) return;
+      
+      try {
+        setLoading(true);
+        
+        // Fetch project metadata and activities in parallel
+        const [projectRes, activitiesRes] = await Promise.all([
+          fetch(`/api/project/${params.id}`),
+          fetch(`/api/activity?projectId=${params.id}&limit=10`)
+        ]);
+
+        if (projectRes.status === 404) {
+          setProject(null);
+          return;
+        }
+
+        if (!projectRes.ok || !activitiesRes.ok) {
+          throw new Error('Failed to fetch project information');
+        }
+
+        const projectData = await projectRes.json();
+        const activitiesData = await activitiesRes.json();
+
+        setProject(projectData.project);
+        setActivities(activitiesData.activities || []);
+      } catch (error) {
+        console.error('Error fetching project data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
     if (session && params.id) {
-      // Fetch project data
-      // Placeholder data
-      setProject({
-        _id: params.id,
-        title: 'API Development Sprint',
-        description: 'Building RESTful API endpoints with authentication and role-based access control',
-        status: 'active',
-        techStack: ['Next.js', 'MongoDB', 'NextAuth', 'Cloudinary'],
-        files: [],
-        workspaceId: { name: 'Engineering Workspace' },
-        createdAt: new Date()
-      });
-      setActivities([]);
-      setLoading(false);
+      fetchProjectData();
     }
   }, [session, params.id]);
+
+  const handleDeleteProject = async () => {
+    if (!confirm(`Are you sure you want to delete "${project.title}"? This action cannot be undone.`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/project/${params.id}`, {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        router.push(`/workspace/${project.workspaceId._id}`);
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Failed to delete project');
+      }
+    } catch (error) {
+      console.error('Error deleting project:', error);
+      alert('An error occurred while deleting the project');
+    }
+  };
 
   if (status === 'loading' || loading) {
     return (
@@ -76,7 +118,7 @@ export default function ProjectPage() {
                  <span className="text-white text-sm">Project Details</span>
               </div>
               
-              <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+            <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-3">
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tight">{project.title}</h1>
@@ -91,7 +133,9 @@ export default function ProjectPage() {
                 </div>
 
                 <div className="flex gap-3">
-                   <Button variant="secondary">Settings</Button>
+                   <Button variant="secondary" onClick={handleDeleteProject} className="text-syntax-red hover:bg-syntax-red/10 border-syntax-red/20">
+                     Delete Project
+                   </Button>
                    <Button variant="primary">Deploy</Button>
                 </div>
               </div>

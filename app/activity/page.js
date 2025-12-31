@@ -12,25 +12,37 @@ export default function ActivityPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   
-  // Realistically this would be a fetch from /api/activity
-  const [activities] = useState([
-    { user: { name: 'Alice', image: null }, action: 'deployed', target: 'production', createdAt: new Date() },
-    { user: { name: 'Bob', image: null }, action: 'created', target: 'new-feature', createdAt: new Date(Date.now() - 3600000) },
-    { user: { name: 'Charlie', image: null }, action: 'invited', target: 'Dave', createdAt: new Date(Date.now() - 7200000) },
-    { user: { name: 'Alice', image: null }, action: 'merged', target: 'main', createdAt: new Date(Date.now() - 86400000) },
-    { user: { name: 'Bob', image: null }, action: 'commented', target: 'UI refinement', createdAt: new Date(Date.now() - 172800000) }
-  ]);
+  const [activities, setActivities] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.push('/api/auth/signin');
+      router.push('/auth/signin');
     }
   }, [status, router]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 800);
-    return () => clearTimeout(timer);
-  }, []);
+    const fetchActivities = async () => {
+      if (!session) return;
+
+      try {
+        setLoading(true);
+        const res = await fetch('/api/activity?limit=50');
+        if (!res.ok) throw new Error('Failed to fetch activities');
+        const data = await res.json();
+        setActivities(data.activities || []);
+      } catch (err) {
+        console.error('Error fetching activities:', err);
+        setError('Could not load system logs.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      fetchActivities();
+    }
+  }, [session]);
 
   if (status === 'loading' || loading) {
     return (
